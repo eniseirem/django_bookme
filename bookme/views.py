@@ -1,10 +1,17 @@
 from django.shortcuts import render
 import requests
-
+from django.http import HttpResponseRedirect
 import json
 # Create your views here.
 
 
+from django.contrib import messages
+
+def add_list(request):
+
+#add here to add to list 
+   messages.info(request, 'Book saved to your list successfully!')
+   return HttpResponseRedirect('.')
 
 def homepage(request):
     response = requests.get('https://api.itbook.store/1.0/new')

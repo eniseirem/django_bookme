@@ -6,6 +6,11 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js'></script>
         <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'></script>
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">#}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 
 </head>
 <body>
@@ -14,31 +19,18 @@
 <div class="container">
 
 
-
-<div > {% include './partial/searchbar.html' %}</div>
+<div> {% include './partial/searchbar.html' %}</div>
 
     <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0" style="color: aliceblue">New Books </h1>
 
   <hr class="mt-2 mb-5">
 
 
-  <div class="row text-center text-lg-left">
-  {% for x in range %}
-{% with lookup_result=bookinfo|lookup:x %}
-     <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100" style="color: aliceblue">
-            <img class="img-fluid img-thumbnail" src="{{ lookup_result.image }}" alt="">{{ lookup_result.title }}
-          </a>
-    </div>
-    {% endwith %}
-    {% endfor %}
-
-  </div>
-
-
+<div> {% include './partial/books.html' %}</div>
 </div>
 <!-- /.container -->
 
 
 </body>
 </html>
+

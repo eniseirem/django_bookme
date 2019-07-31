@@ -1,0 +1,20 @@
+{% load custom_filt %}
+
+  <div class="row text-center text-lg-left">
+  {% for x in range %}
+{% with lookup_result=bookinfo|lookup:x %}
+    <div class="">
+       <a href="#" class="btn btn-info btn-md" style="color: aliceblue">
+          <span class="glyphicon glyphicon-plus"></span> Add to mylist
+        </a>
+</div>
+     <div class="col-lg-3 col-md-4 col-6">
+      <a href="#" class="d-block mb-4 h-100" style="color: aliceblue">
+            <img class="img-fluid img-thumbnail" src="{{ lookup_result.image }}" alt="">{{ lookup_result.title }}
+          </a>
+
+ </div>
+    {% endwith %}
+    {% endfor %}
+
+  </div>
