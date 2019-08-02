@@ -1,9 +1,25 @@
+{% extends './layout.html' %}
+{% block content %}
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Homepage</title>
+    <title>My Book List</title>
+
+
 </head>
 <body>
-<h1>Marked Books</h1>
+
+<!-- Page Content -->
+<div class="container">
+
+    <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0" style="color: aliceblue">My Book List </h1>
+
+  <hr class="mt-2 mb-5">
+
+
+<div> {% include './partial/books.html' with button_id=0%}</div>
+</div>
+<!-- /.container -->
+
 </body>
-</html>
+{% endblock %}

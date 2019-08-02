@@ -3,11 +3,15 @@
   <div class="row text-center text-lg-left">
   {% for x in range %}
 {% with lookup_result=bookinfo|lookup:x %}
-    <div class="">
-       <a href="#" class="btn btn-info btn-md" style="color: aliceblue">
+    {%  if button_id is 0 %}
+
+    {% else %}
+    <div class="" id="#add">
+       <a href="{% url 'add_list' id=lookup_result.isbn13 name=lookup_result.title img=lookup_result.image%}" class="btn btn-info btn-md" style="color: aliceblue">
           <span class="glyphicon glyphicon-plus"></span> Add to mylist
         </a>
 </div>
+    {% endif %}
      <div class="col-lg-3 col-md-4 col-6">
       <a href="#" class="d-block mb-4 h-100" style="color: aliceblue">
             <img class="img-fluid img-thumbnail" src="{{ lookup_result.image }}" alt="">{{ lookup_result.title }}
@@ -18,3 +22,12 @@
     {% endfor %}
 
   </div>
+{##}
+{#{% if messages %}#}
+{#<ul class="#messages">#}
+{#    {% for message in messages %}#}
+{#    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#{% endif %}#}
+
