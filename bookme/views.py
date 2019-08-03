@@ -31,6 +31,15 @@ def homepage(request):
     bookdata = response.json()
     bookinfo = bookdata['books']
     b_range = int(bookdata['total'])
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        response = requests.get('https://api.itbook.store/1.0/search/'+search_term)
+        bookdata = response.json()
+        bookinfo = bookdata['books']
+        b_range = len(bookinfo)
+
+        if b_range == 0:
+            return booklist(request)
 
     return render(request, 'homepage.html', {'bookdata': bookdata, 'bookinfo': bookinfo, 'range': range(b_range)})
 def booklist(request):
@@ -48,3 +57,4 @@ def booksdetails(request,id):
     bookinfo[0] = bookdata
     b_range = 1
     return render(request, 'booksdetails.html',{'bookinfo': bookinfo, 'range': range(b_range)})
+
