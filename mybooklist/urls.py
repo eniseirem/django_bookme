@@ -19,8 +19,8 @@ from bookme import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.homepage),
-    path('booklist/', views.booklist),
-    path ('booksdetails/', views.booksdetails),
+    path('', views.homepage, name='home'),
+    path('booklist/', views.booklist, name='booklist'),
+    path ('booksdetails/<int:id>', views.booksdetails, name='details'),
     path ('addlist/<int:id>/<str:name>/<path:img>', views.add_list, name='add_list'),
 ]

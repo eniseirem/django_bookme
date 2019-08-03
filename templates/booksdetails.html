@@ -1,10 +1,27 @@
 <html>
+{% extends './layout.html' %}
+{% block content %}
 <head>
     <meta charset="utf-8">
-    <title>Homepage</title>
+    <title>Details</title>
 </head>
 <body>
-<h1>Selected Books Details</h1>
+<body>
+
+<!-- Page Content -->
+<div class="container">
+
+    <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0" style="color: aliceblue">About The Book</h1>
+
+  <hr class="mt-2 mb-5">
+
+
+<div> {% include './partial/books.html' with detail_id=1%}</div>
+</div>
+<!-- /.container -->
 
 </body>
+
+</body>
+{% endblock %}
 </html>

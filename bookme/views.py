@@ -39,5 +39,12 @@ def booklist(request):
     b_range = Booklist.objects.count()
     return render(request, 'booklist.html', {'bookinfo': bookinfo, 'range': range(b_range)})
 
-def booksdetails(request):
-    return render(request, 'booksdetails.html')
+def booksdetails(request,id):
+    id_s = str(id)
+    response = requests.get('https://api.itbook.store/1.0/books/'+id_s)
+
+    bookdata = response.json()
+    bookinfo = {}
+    bookinfo[0] = bookdata
+    b_range = 1
+    return render(request, 'booksdetails.html',{'bookinfo': bookinfo, 'range': range(b_range)})

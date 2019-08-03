@@ -1,27 +1,100 @@
 {% load custom_filt %}
+<div class="row text-center text-lg-left">
+    {% for x in range %}
 
-  <div class="row text-center text-lg-left">
-  {% for x in range %}
-{% with lookup_result=bookinfo|lookup:x %}
-    {%  if button_id is 0 %}
+        {% with lookup_result=bookinfo|lookup:x %}
 
-    {% else %}
-    <div class="" id="#add">
-       <a href="{% url 'add_list' id=lookup_result.isbn13 name=lookup_result.title img=lookup_result.image%}" class="btn btn-info btn-md" style="color: aliceblue">
-          <span class="glyphicon glyphicon-plus"></span> Add to mylist
-        </a>
-</div>
-    {% endif %}
-     <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100" style="color: aliceblue">
-            <img class="img-fluid img-thumbnail" src="{{ lookup_result.image }}" alt="">{{ lookup_result.title }}
-          </a>
 
- </div>
-    {% endwith %}
+
+            <div class="col-lg-3 col-md-4 col-6">
+
+                <div class="thumbnail" style="background-color: #353b48">
+                    {% if button_id is 0 %}
+
+                    {% else %}
+
+                        <div class="" id="#add">
+                            <a href="{% url 'add_list' id=lookup_result.isbn13 name=lookup_result.title img=lookup_result.image %}"
+                               class="btn btn-info btn-lg" style="background-color: #353b48">
+                                <span class="glyphicon glyphicon-plus"></span> Add to my list</a>
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'details' id=lookup_result.isbn13 %}"
+                       style="color: aliceblue">
+                        <img src="{{ lookup_result.image }}" alt="">
+                        <p><strong>{{ lookup_result.title }}</strong></p>
+                    </a>
+
+                </div>
+            </div>
+
+            {% if detail_id is 1 %}
+                <div class="col-lg-6 col-md-4 col-6">
+                    <table class="table table-bordered table-dark" style="background-color: #353b48">
+
+                        <tbody>
+                        <tr>
+                            <th scope="row">Title</th>
+                            <td>{{ lookup_result.title }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Subtitle</th>
+                            <td>{{ lookup_result.subtitle }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Authors</th>
+                            <td>{{ lookup_result.authors }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Pages</th>
+                            <td>{{ lookup_result.pages }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Publisher</th>
+                            <td>{{ lookup_result.publisher }}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Price</th>
+                            <td>{{ lookup_result.price }}</td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Link</th>
+                            <td>{{ lookup_result.url }}</td>
+
+                        </tr>
+                        {% for chp_key,link_pdf in lookup_result.pdf.items %}
+                            <tr>
+
+                                <th scope="row">Pdf</th>
+                                <td><a href="{{ link_pdf }}">{{ link_pdf }}</a></td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    <div class="align-left">
+
+                        <label>Description</label>
+                        <textarea readonly class="form-control" rows="5" id="desc"
+                                  style="background-color:#353b48; color:aliceblue">{{ lookup_result.desc }}</textarea>
+
+                    </div>
+
+
+                </div>
+            {% else %}
+            {% endif %}
+        {% endwith %}
     {% endfor %}
 
-  </div>
+</div>
 {##}
 {#{% if messages %}#}
 {#<ul class="#messages">#}
