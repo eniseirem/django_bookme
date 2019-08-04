@@ -1,9 +1,10 @@
 {% load custom_filt %}
 <div class="row text-center text-lg-left">
+{% with range=bookinfo.end_index|times %}
+
     {% for x in range %}
 
         {% with lookup_result=bookinfo|lookup:x %}
-{#            {% with lookup_result=bookinfo %}#}
 
 
             <div class="col-lg-3 col-md-4 col-6">
@@ -27,23 +28,8 @@
 
                 </div>
             </div>
-<div class="pagination">
-    <span class="step-links">
-        {% if bookinfo.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ bookinfo.previous_page_number }}">previous</a>
-        {% endif %}
 
-        <span class="current">
-            Page {{ bookinfo.number }} of {{ bookinfo.paginator.num_pages }}.
-        </span>
 
-        {% if lookup_result.has_next %}
-            <a href="?page={{ bookinfo.next_page_number }}">next</a>
-            <a href="?page={{ bookinfo.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
             {% if detail_id is 1 %}
                 <div class="col-lg-6 col-md-4 col-6">
                     <table class="table table-bordered table-dark" style="background-color: #353b48">
@@ -109,8 +95,26 @@
             {% endif %}
         {% endwith %}
     {% endfor %}
+{% endwith %}
 
 </div>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if bookinfo.has_previous %}
+            <a href="{{ request.get_full_path }}?page=1">&laquo; first</a>
+            <a href="{{ request.get_full_path }}?page={{ bookinfo.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ request.resolver_match.kwargs.page }} of {{ bookinfo.paginator.num_pages }}.
+        </span>
+
+        {% if bookinfo.has_next %}
+            <a href="{{ request.get_full_path }}?page={{ bookinfo.next_page_number }}">next</a>
+        <a href="{{ request.get_full_path }}}/?page={{ bookinfo.paginator.num_pages }}">last &raquo;</a></span></div>
+        {% endif %}
 {##}
 {#{% if messages %}#}
 {#<ul class="#messages">#}
