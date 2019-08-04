@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import requests
 from django.shortcuts import redirect
-from .models import Booklist
+from bookme.models import Booklist
 from django.core.paginator import Paginator
 import logging
 from django.http import HttpResponseRedirect
@@ -13,29 +13,31 @@ from django.contrib import messages
 def add_list(request, id, name, img):
 
     obj, created = Booklist.objects.get_or_create(isbn13=id, defaults={'title': name, 'image': img})
+    next = request.POST.get('next', '/')
+
     if created is False:
-        return homepage(request)
+        messages.error(request, 'Book already exist in your list')
+
 
     else:
+        messages.success(request, 'Book saved to your list successfully!')
 
-        return booklist(request)
+    return HttpResponseRedirect(next)
 
-
-# #add here to add to list
-#    messages.info(request, 'Book saved to your list successfully!')
-#    return HttpResponseRedirect('.')
 
 def homepage(request):
     response = requests.get('https://api.itbook.store/1.0/new')
     bookdata = response.json()
     bookinfo = bookdata['books']
-    b_range = len(bookinfo)
+
     if 'search' in request.GET:
         search_term = request.GET['search']
         response = requests.get('https://api.itbook.store/1.0/search/'+search_term)
         bookdata = response.json()
         bookinfo = bookdata['books']
         total = int(bookdata['total'])
+        b_range = len(bookinfo)
+
         if total%2 is 0:
             page_b = total//10
         else:
@@ -49,37 +51,39 @@ def homepage(request):
                 bookinfo.append(bookdata['books'][x])
 
 
-        b_range = len(bookinfo)
 
         if b_range == 0:
-            return booklist(request)
+            messages.info(request, 'Could not find any match. Try something else')
 
 
-    # paginator = list(bookinfo)
-    # page = request.GET.get('page')
-    # bookinfo = paginator.get_page(page)
-    return render(request, 'homepage.html', {'bookinfo': bookinfo, 'range': range(b_range)})
+
+    paged_bookinfo=list(request,bookinfo)
+
+
+
+    return render(request, 'homepage.html', {'bookinfo': paged_bookinfo},)
 
 def booklist(request):
 
     bookinfo = Booklist.objects.all()
-    b_range = Booklist.objects.count()
+    paged_bookinfo=list(request,bookinfo)
 
-    return render(request, 'booklist.html', {'bookinfo': bookinfo, 'range': range(b_range)})
+    return render(request, 'booklist.html', {'bookinfo': paged_bookinfo})
 
 def booksdetails(request,id):
     id_s = str(id)
     response = requests.get('https://api.itbook.store/1.0/books/'+id_s)
 
     bookdata = response.json()
-    bookinfo = {}
-    bookinfo[0] = bookdata
-    b_range = 1
-    return render(request, 'booksdetails.html',{'bookinfo': bookinfo, 'range': range(b_range)})
+    bookinfo = []
+    bookinfo.append(bookdata)
+    paged_bookinfo = list(request, bookinfo)
 
-def list(pagine):
+    return render(request, 'booksdetails.html',{'bookinfo': paged_bookinfo})
+
+def list(request,pagine):
     paginator = Paginator(pagine,10)
-    return paginator
+    page = request.GET.get('page')
+    pagine = paginator.get_page(page)
+    return pagine
 
-def lookup(d, key):
-    return d[key]

@@ -23,4 +23,5 @@ urlpatterns = [
     path('booklist/', views.booklist, name='booklist'),
     path ('booksdetails/<int:id>', views.booksdetails, name='details'),
     path ('addlist/<int:id>/<str:name>/<path:img>', views.add_list, name='add_list'),
+
 ]

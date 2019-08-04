@@ -1,5 +1,18 @@
 {% load custom_filt %}
+{% if messages %}
+<ul class="messages" style="color: {{ color }}; width: 40%;
+    margin: auto; font-size:20px"><strong>
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</strong></ul>
+{% endif %}
+
+<hr class="mt-2 mb-5">
+
 <div class="row text-center text-lg-left">
+
+
 {% with range=bookinfo.end_index|times %}
 
     {% for x in range %}
@@ -22,6 +35,7 @@
                     {% endif %}
                     <a href="{% url 'details' id=lookup_result.isbn13 %}"
                        style="color: aliceblue">
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <img src="{{ lookup_result.image }}" alt="">
                         <p><strong>{{ lookup_result.title }}</strong></p>
                     </a>
@@ -115,12 +129,4 @@
             <a href="{{ request.get_full_path }}?page={{ bookinfo.next_page_number }}">next</a>
         <a href="{{ request.get_full_path }}}/?page={{ bookinfo.paginator.num_pages }}">last &raquo;</a></span></div>
         {% endif %}
-{##}
-{#{% if messages %}#}
-{#<ul class="#messages">#}
-{#    {% for message in messages %}#}
-{#    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>#}
-{#    {% endfor %}#}
-{#</ul>#}
-{#{% endif %}#}
 
