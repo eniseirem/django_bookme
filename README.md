@@ -50,7 +50,20 @@ $ pip install requests
 
 You'll also need internet connection for mysql server.
 
-<b>IMPORTANT<b>
+
+<br>
+<b> Database Informations </b> 
+<br>
+```
+'NAME':'lyEBWxgVhU',
+'USER': 'lyEBWxgVhU',
+'PASSWORD': 'TJdReyYGjs',
+'HOST': '37.59.55.185',
+ #'remotemysql.com'
+ 'PORT': '3306'
+ ```
+ <br>
+ <b>IMPORTANT</b>
 
 For development at mybooklist/settings.py -> DEBUG must be set to TRUE
 <br>
