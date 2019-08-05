@@ -12,10 +12,12 @@ from django.contrib import messages
 
 def add_list(request, id, name, img):
 
+#checking the booklist for duplicate
     obj, created = Booklist.objects.get_or_create(isbn13=id, defaults={'title': name, 'image': img})
-    next = request.POST.get('next', '/')
+    next = request.POST.get('next', request.GET.get('back'))
 
     if created is False:
+
         messages.error(request, 'Book already exist in your list')
 
 
@@ -34,34 +36,34 @@ def homepage(request):
         search_term = request.GET['search']
         response = requests.get('https://api.itbook.store/1.0/search/'+search_term)
         bookdata = response.json()
-        bookinfo = bookdata['books']
+        bookinfo = []
         total = int(bookdata['total'])
-        b_range = len(bookinfo)
 
-        if total%2 is 0:
+
+#takes the all results from api and add them to a list for later use
+        if total%10 is 0:
             page_b = total//10
         else:
             page_b = (total//10)+1
-        for i in range(page_b):
+        for i in range(1,page_b+1):
             p = str(i)
             response = requests.get('https://api.itbook.store/1.0/search/' + search_term+'/'+p)
-            bookdata = response.json()
-            total_b = len(bookdata['books'])
-            for x in range(total_b):
-                bookinfo.append(bookdata['books'][x])
+            bookdata_p = response.json()
+
+            for item in bookdata_p['books']:
+                bookinfo.append(item)
 
 
 
-        if b_range == 0:
-            messages.info(request, 'Could not find any match. Try something else')
 
-
-
+#paginator
     paged_bookinfo=list(request,bookinfo)
 
+#keeping params for paginator
+    params = request.GET.get('search', '')
+    params_link="search="+params
 
-
-    return render(request, 'homepage.html', {'bookinfo': paged_bookinfo},)
+    return render(request, 'homepage.html', {'bookinfo': paged_bookinfo, 'params':params_link})
 
 def booklist(request):
 

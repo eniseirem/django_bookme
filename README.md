@@ -47,3 +47,11 @@ Use the package manager pip to install mysqlclient and requests.
 $ pip install mysqlclient
 $ pip install requests
 ```
+
+You'll also need internet connection for mysql server.
+
+<b>IMPORTANT<b>
+
+For development at mybooklist/settings.py -> DEBUG must be set to TRUE
+<br>
+(It left as true)

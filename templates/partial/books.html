@@ -1,5 +1,5 @@
-{% load custom_filt %}
-{% if messages %}
+
+    {% if messages %}
 <ul class="messages" style="color: {{ color }}; width: 40%;
     margin: auto; font-size:20px"><strong>
     {% for message in messages %}
@@ -13,11 +13,8 @@
 <div class="row text-center text-lg-left">
 
 
-{% with range=bookinfo.end_index|times %}
 
-    {% for x in range %}
-
-        {% with lookup_result=bookinfo|lookup:x %}
+    {% for lookup_result in bookinfo %}
 
 
             <div class="col-lg-3 col-md-4 col-6">
@@ -28,14 +25,13 @@
                     {% else %}
 
                         <div class="" id="#add">
-                            <a href="{% url 'add_list' id=lookup_result.isbn13 name=lookup_result.title img=lookup_result.image %}"
+                              <a href="{% url 'add_list' id=lookup_result.isbn13 name=lookup_result.title img=lookup_result.image %}?back={{  request.build_absolute_uri }}"
                                class="btn btn-info btn-lg" style="background-color: #353b48">
                                 <span class="glyphicon glyphicon-plus"></span> Add to my list</a>
                         </div>
                     {% endif %}
                     <a href="{% url 'details' id=lookup_result.isbn13 %}"
                        style="color: aliceblue">
-                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <img src="{{ lookup_result.image }}" alt="">
                         <p><strong>{{ lookup_result.title }}</strong></p>
                     </a>
@@ -81,7 +77,7 @@
 
                         <tr>
                             <th scope="row">Link</th>
-                            <td>{{ lookup_result.url }}</td>
+                            <td>href="{{ lookup_result.url }}"</td>
 
                         </tr>
                         {% for chp_key,link_pdf in lookup_result.pdf.items %}
@@ -107,9 +103,9 @@
                 </div>
             {% else %}
             {% endif %}
-        {% endwith %}
+
     {% endfor %}
-{% endwith %}
+
 
 </div>
 
@@ -117,16 +113,16 @@
 <div class="pagination">
     <span class="step-links">
         {% if bookinfo.has_previous %}
-            <a href="{{ request.get_full_path }}?page=1">&laquo; first</a>
-            <a href="{{ request.get_full_path }}?page={{ bookinfo.previous_page_number }}">previous</a>
+            <a href="?page=1&{{params}}">&laquo; first</a>
+            <a href="?page={{ bookinfo.previous_page_number }}&{{params}}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ request.resolver_match.kwargs.page }} of {{ bookinfo.paginator.num_pages }}.
+            Page {{ bookinfo.number}} of {{ bookinfo.paginator.num_pages }}.
         </span>
 
         {% if bookinfo.has_next %}
-            <a href="{{ request.get_full_path }}?page={{ bookinfo.next_page_number }}">next</a>
-        <a href="{{ request.get_full_path }}}/?page={{ bookinfo.paginator.num_pages }}">last &raquo;</a></span></div>
+            <a href="?page={{ bookinfo.next_page_number }}&{{params}}">next</a>
+        <a href="?page={{ bookinfo.paginator.num_pages }}&{{params}}">last &raquo;</a></span></div>
         {% endif %}
 
